@@ -5,10 +5,12 @@ const logger = require('morgan');
 require('dotenv').config();
 const port = process.env.SERVER_PORT;
 const connString = process.env.DB_STRING;
+const cors = require('cors');
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(cors());
 
 mongoose.connect(connString, {useNewUrlParser: true, useUnifiedTopology: true});
 const db = mongoose.connection;
