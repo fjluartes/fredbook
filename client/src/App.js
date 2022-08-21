@@ -1,14 +1,17 @@
-import "./App.css";
-/* import SignUp from "./pages/SignUp"; */
+import * as React from "react";
+import { Routes, Route } from "react-router-dom";
 import SignInSide from "./pages/SignInSide";
+import SignUp from "./pages/SignUp";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      {/* <SignUp /> */}
-      <SignInSide />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<SignInSide />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </>
   );
 }
-
-export default App;
