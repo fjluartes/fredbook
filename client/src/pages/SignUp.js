@@ -1,11 +1,13 @@
-import * as React from "react";
+import { React, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -35,6 +37,47 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function SignUp() {
+  const [month, setMonth] = useState("");
+  const [day, setDay] = useState("");
+  const [year, setYear] = useState("");
+
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+
+  const days = Array.from(Array(31).keys(), (n) => n + 1);
+
+  const years = [
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026",
+    "2027",
+    "2028",
+    "2029",
+    "2030",
+  ];
+
+  const handleChange = (e) => {
+    setMonth(e.target.month);
+    setDay(e.target.day);
+    setYear(e.target.year);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -111,13 +154,53 @@ export default function SignUp() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={
-                    <Checkbox value="allowExtraEmails" color="primary" />
-                  }
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
+              <Grid item xs={4}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Month</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    month={month}
+                    label="Month"
+                    onChange={handleChange}
+                  >
+                    {months.map((month) => {
+                      return <MenuItem value={month}>{month}</MenuItem>;
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={4}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Day</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    day={day}
+                    label="Day"
+                    onChange={handleChange}
+                  >
+                    {days.map((day) => {
+                      return <MenuItem value={day}>{day}</MenuItem>;
+                    })}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={4}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Year</InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    year={year}
+                    label="Year"
+                    onChange={handleChange}
+                  >
+                    {years.map((year) => {
+                      return <MenuItem value={year}>{year}</MenuItem>;
+                    })}
+                  </Select>
+                </FormControl>
               </Grid>
             </Grid>
             <Button
