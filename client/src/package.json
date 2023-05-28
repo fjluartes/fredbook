@@ -19,8 +19,7 @@
     "next": "latest",
     "prop-types": "latest",
     "react": "latest",
-    "react-dom": "latest",
-    "recharts": "^2.6.2"
+    "react-dom": "latest"
   },
   "devDependencies": {
     "eslint": "latest",
