@@ -100,14 +100,6 @@ export default function register() {
                     format="YYYY-MM-DD"
                   />
                 </LocalizationProvider>
-                {/* <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                /> */}
               </Grid>
               <Grid item xs={12}>
                 <TextField
