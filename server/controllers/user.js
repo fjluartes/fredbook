@@ -24,7 +24,7 @@ module.exports.get = (params) => {
 };
 
 module.exports.login = (params) => {
-  return User.findOne({ username: params.username }).then((user) => {
+  return User.findOne({ email: params.email }).then((user) => {
     if (user === null) return false;
     const isPasswordMatched = bcrypt.compareSync(
       params.password,

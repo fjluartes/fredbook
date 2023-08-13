@@ -5,7 +5,7 @@ const secret = process.env.SECRET;
 module.exports.createAccessToken = (user) => {
   const data = {
     id: user._id,
-    username: user.username
+    email: user.email,
   };
   return jwt.sign(data, secret, {});
 };

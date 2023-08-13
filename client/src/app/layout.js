@@ -51,8 +51,6 @@ export default function RootLayout({ children }) {
               sx={{
                 flexGrow: 1,
                 bgcolor: "background.default",
-                ml: `${DRAWER_WIDTH}px`,
-                mt: ["48px", "56px", "64px"],
                 p: 3,
               }}
             >
