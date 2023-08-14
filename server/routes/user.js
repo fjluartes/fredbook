@@ -3,17 +3,20 @@ const router = express.Router();
 const UserController = require("../controllers/user");
 const auth = require("../auth");
 
-router.post("/register", (req, res) => {
-  UserController.register(req.body).then((result) => res.send(result));
+router.post("/register", async (req, res) => {
+  const result = await UserController.register(req.body);
+  res.send(result);
 });
 
-router.get("/", auth.verify, (req, res) => {
+router.get("/", auth.verify, async (req, res) => {
   const user = auth.decode(req.headers.authorization);
-  UserController.get({ userId: user.id }).then((user) => res.send(user));
+  const userData = await UserController.get({ userId: user.id });
+  res.send(userData);
 });
 
-router.post("/login", (req, res) => {
-  UserController.login(req.body).then((result) => res.send(result));
+router.post("/login", async (req, res) => {
+  const result = await UserController.login(req.body);
+  res.send(result);
 });
 
 module.exports = router;
