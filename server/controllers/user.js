@@ -3,37 +3,39 @@ const auth = require("../auth");
 const bcrypt = require("bcrypt");
 let salt = bcrypt.genSaltSync(10);
 
-module.exports.register = (params) => {
-  let hash = bcrypt.hashSync(params.password, salt);
-  let user = new User({
-    name: params.name,
-    birthDate: params.birthDate,
-    email: params.email,
-    password: hash,
-  });
-  return user.save().then((err) => {
-    return err ? false : true;
-  });
-};
+module.exports = {
+  register: (params) => {
+    let hash = bcrypt.hashSync(params.password, salt);
+    let user = new User({
+      name: params.name,
+      birthDate: params.birthDate,
+      email: params.email,
+      password: hash,
+    });
+    return user.save().then((err) => {
+      return err ? false : true;
+    });
+  },
 
-module.exports.get = (params) => {
-  return User.findById(params.userId).then((user) => {
-    user.password = undefined;
-    return user;
-  });
-};
+  get: (params) => {
+    return User.findById(params.userId).then((user) => {
+      user.password = undefined;
+      return user;
+    });
+  },
 
-module.exports.login = (params) => {
-  return User.findOne({ email: params.email }).then((user) => {
-    if (user === null) return false;
-    const isPasswordMatched = bcrypt.compareSync(
-      params.password,
-      user.password
-    );
-    if (isPasswordMatched) {
-      return { access: auth.createAccessToken(user.toObject()) };
-    } else {
-      return false;
-    }
-  });
+  login: (params) => {
+    return User.findOne({ email: params.email }).then((user) => {
+      if (user === null) return false;
+      const isPasswordMatched = bcrypt.compareSync(
+        params.password,
+        user.password
+      );
+      if (isPasswordMatched) {
+        return { access: auth.createAccessToken(user.toObject()) };
+      } else {
+        return false;
+      }
+    });
+  },
 };
