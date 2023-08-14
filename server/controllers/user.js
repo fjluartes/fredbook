@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt");
 let salt = bcrypt.genSaltSync(10);
 
 module.exports = {
-  register: (params) => {
+  register: async (params) => {
     let hash = bcrypt.hashSync(params.password, salt);
     let user = new User({
       name: params.name,
@@ -12,30 +12,27 @@ module.exports = {
       email: params.email,
       password: hash,
     });
-    return user.save().then((err) => {
-      return err ? false : true;
-    });
+    const result = await user.save();
+    return result;
   },
 
-  get: (params) => {
-    return User.findById(params.userId).then((user) => {
-      user.password = undefined;
-      return user;
-    });
+  get: async (params) => {
+    const user = await User.findById(params.userId);
+    user.password = undefined;
+    return user;
   },
 
-  login: (params) => {
-    return User.findOne({ email: params.email }).then((user) => {
-      if (user === null) return false;
-      const isPasswordMatched = bcrypt.compareSync(
-        params.password,
-        user.password
-      );
-      if (isPasswordMatched) {
-        return { access: auth.createAccessToken(user.toObject()) };
-      } else {
-        return false;
-      }
-    });
+  login: async (params) => {
+    const user = await User.findOne({ email: params.email });
+    if (user === null) return false;
+    const isPasswordMatched = bcrypt.compareSync(
+      params.password,
+      user.password
+    );
+    if (isPasswordMatched) {
+      return { access: auth.createAccessToken(user.toObject()) };
+    } else {
+      return false;
+    }
   },
 };
