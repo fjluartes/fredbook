@@ -18,6 +18,7 @@ import dayjs from "dayjs";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -42,17 +43,43 @@ function Copyright(props) {
 const defaultTheme = createTheme();
 
 export default function register() {
-  const [birthDate, setBirthDate] = useState("");
+  const [name, setName] = useState("");
+  const [birthDate, setBirthDate] = useState(dayjs().subtract(18, "year"));
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get("name"),
-      birthDate: birthDate["$d"].toLocaleDateString("en-CA"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const userData = {
+        name,
+        birthDate: birthDate["$d"].toLocaleDateString("en-CA"),
+        email,
+        password,
+      };
+      // console.log(userData);
+      const result = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL_API}/users/register`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // console.log(result.data);
+      if (result.data) {
+        alert("User successfully registered");
+      } else {
+        alert(result);
+      }
+      setName("");
+      setBirthDate(dayjs().subtract(18, "year"));
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -89,11 +116,16 @@ export default function register() {
                   id="name"
                   label="Name"
                   autoFocus
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                   <DatePicker
+                    slotProps={{
+                      textField: { fullWidth: true, required: true },
+                    }}
                     label="Birth Date"
                     value={birthDate}
                     onChange={(birthDate) => setBirthDate(birthDate)}
@@ -109,6 +141,8 @@ export default function register() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -120,6 +154,8 @@ export default function register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12}>
