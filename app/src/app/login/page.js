@@ -1,5 +1,7 @@
 "use client";
 import * as React from "react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -13,6 +15,7 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 
 function Copyright(props) {
   return (
@@ -32,18 +35,42 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function login() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      const userData = {
+        email,
+        password,
+      };
+      // console.log(userData);
+      const result = await axios.post(
+        `${process.env.NEXT_PUBLIC_URL_API}/users/login`,
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // console.log(result.data);
+      if (result.data) {
+        // alert("User successfully logged in");
+        router.push("/");
+      } else {
+        alert(result);
+      }
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -79,6 +106,8 @@ export default function login() {
               name="email"
               autoComplete="email"
               autoFocus
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
             <TextField
               margin="normal"
@@ -89,6 +118,8 @@ export default function login() {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

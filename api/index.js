@@ -1,13 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const logger = require("morgan");
+// const logger = require("morgan");
 require("dotenv").config();
 const port = process.env.SERVER_PORT;
 const connString = process.env.MONGO_URL_TEST;
 const cors = require("cors");
+const logger = require("./logger");
 
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
@@ -19,7 +20,7 @@ mongoose.connect(connString, {
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error"));
 db.once("open", () => {
-  console.log("Connected to cloud database: MongoDB Atlas");
+  logger.info("Connected to cloud database: MongoDB Atlas");
 });
 
 const userRoutes = require("./routes/user");
@@ -33,5 +34,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(port || 4000, (err) => {
-  console.log(`Server running at port ${port}`);
+  logger.info(`Server running at port ${port}`);
 });

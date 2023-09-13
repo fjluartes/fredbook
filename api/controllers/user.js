@@ -30,7 +30,7 @@ module.exports = {
       user.password
     );
     if (isPasswordMatched) {
-      return { access: auth.createAccessToken(user.toObject()) };
+      return { accessToken: auth.createAccessToken(user.toObject()) };
     } else {
       return false;
     }

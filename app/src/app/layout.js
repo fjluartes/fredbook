@@ -36,7 +36,7 @@ const LINKS = [
 const PLACEHOLDER_LINKS = [
   { text: "Settings", icon: SettingsIcon },
   { text: "Support", icon: SupportIcon },
-  { text: "Logout", icon: LogoutIcon },
+  // { text: "Logout", icon: LogoutIcon },
 ];
 
 export default function RootLayout({ children }) {
@@ -109,6 +109,14 @@ export default function RootLayout({ children }) {
                     </ListItemButton>
                   </ListItem>
                 ))}
+                <ListItem key={"logout"} disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <LogoutIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={"Logout"} />
+                  </ListItemButton>
+                </ListItem>
               </List>
             </Drawer>
             <Box
