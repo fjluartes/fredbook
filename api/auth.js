@@ -10,6 +10,7 @@ module.exports.createAccessToken = (user) => {
   return jwt.sign(data, secret, {});
 };
 
+// Test Push for GitHub
 module.exports.verify = (req, res, next) => {
   let token = req.headers.authorization;
   if (typeof token !== 'undefined') {
